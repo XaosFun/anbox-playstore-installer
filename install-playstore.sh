@@ -63,13 +63,6 @@ else
 	UNSQUASHFS=$(which unsquashfs)
 fi
 
-# check if wget is installed
-if [ ! "$(which wget)" ]; then
-	echo -e "wget is not installed. Please install wget.\nExample: sudo apt install wget"
-	exit 1
-else
-	WGET=$(which wget)
-fi
 
 # check if curl is installed
 if [ ! "$(which curl)" ]; then
@@ -98,9 +91,7 @@ fi
 
 
 # get latest releasedate based on tag_name for latest x86_64 build
-OPENGAPPS_RELEASEDATE="$($CURL -s https://api.github.com/repos/opengapps/x86_64/releases/latest | grep tag_name | grep -o "\"[0-9][0-9]*\"" | grep -o "[0-9]*")"
-OPENGAPPS_FILE="open_gapps-x86_64-7.1-pico-$OPENGAPPS_RELEASEDATE.zip"
-OPENGAPPS_URL="https://sourceforge.net/projects/opengapps/files/x86_64/$OPENGAPPS_RELEASEDATE/$OPENGAPPS_FILE"
+OPENGAPPS_FILE="open_gapps-x86_64-7.1-pico-20211103.zip"
 
 HOUDINI_Y_URL="http://dl.android-x86.org/houdini/7_y/houdini.sfs"
 HOUDINI_Z_URL="http://dl.android-x86.org/houdini/7_z/houdini.sfs"
@@ -204,15 +195,7 @@ fi
 
 # get opengapps and install it
 cd "$WORKDIR"
-echo "Loading open gapps from $OPENGAPPS_URL"
-while : ;do
- if [ ! -f ./$OPENGAPPS_FILE ]; then
-	 $WGET -q --show-progress $OPENGAPPS_URL
- else
-	 $WGET -q --show-progress -c $OPENGAPPS_URL
- fi
- [ $? = 0 ] && break
-done
+
 echo "extracting open gapps"
 
 $UNZIP -d opengapps ./$OPENGAPPS_FILE
